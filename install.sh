@@ -40,11 +40,11 @@ echo \
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 #Install ansible
-echo "--------------------Installing Ansible--------------------"
-sudo apt update -y
-sudo apt install software-properties-common -y
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-sudo apt install ansible -y
+# echo "--------------------Installing Ansible--------------------"
+# sudo apt update -y
+# sudo apt install software-properties-common -y
+# sudo add-apt-repository --yes --update ppa:ansible/ansible
+# sudo apt install ansible -y
 #Install docker-compose
 echo "--------------------Installing Docker-compose--------------------" 
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -57,16 +57,16 @@ sudo apt-get install zip -y
 sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip
 sudo ./aws/install
 #Install EksCtl
-echo "--------------------Installing EKS-CTL--------------------"
-sudo curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-sudo mv /tmp/eksctl /usr/local/bin
-#Install Kubectl
-echo "----------"----------Installing Kubectl"--------------------"
-sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-echo "$(<kubectl.sha256)  kubectl" | sha256sum --check
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-#Install Minikube
+# echo "--------------------Installing EKS-CTL--------------------"
+# sudo curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+# sudo mv /tmp/eksctl /usr/local/bin
+# #Install Kubectl
+# echo "----------"----------Installing Kubectl"--------------------"
+# sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+# sudo curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+# echo "$(<kubectl.sha256)  kubectl" | sha256sum --check
+# sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+# #Install Minikube
 echo "--------------------Installing Minikube--------------------"
 sudo curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
