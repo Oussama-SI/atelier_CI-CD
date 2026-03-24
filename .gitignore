@@ -1,6 +1,8 @@
 full_install.sh
 Jenkins-cluster.sh
 
+Jenkins/Jenkins*/
+
 *.tfvars
 *.tfstate
 *.terraform
