@@ -1,0 +1,10 @@
+.git
+.gitignore
+
+project/node_modules
+project/dist
+project/.angular
+
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*

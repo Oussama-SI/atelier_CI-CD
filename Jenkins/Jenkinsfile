@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     AWS_REGION      = 'us-east-1'
-    ECR_REGISTRY    = '<account_id>.dkr.ecr.us-east-1.amazonaws.com'
+    ECR_REGISTRY    = '329494315328.dkr.ecr.us-east-1.amazonaws.com'
     ECR_REPO        = 'project-calander'
     IMAGE_TAG       = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     ECS_CLUSTER     = 'project-calander-cluster'
