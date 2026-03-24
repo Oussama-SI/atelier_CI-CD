@@ -1,0 +1,96 @@
+pipeline {
+  agent any
+
+  environment {
+    AWS_REGION      = 'us-east-1'
+    ECR_REGISTRY    = '<account_id>.dkr.ecr.us-east-1.amazonaws.com'
+    ECR_REPO        = 'project-calander'
+    IMAGE_TAG       = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+    ECS_CLUSTER     = 'project-calander-cluster'
+    ECS_SERVICE_PROD    = 'project-calander-prod'
+    ECS_SERVICE_STAGING = 'project-calander-staging'
+    SUPABASE_URL        = credentials('SUPABASE_URL')
+    SUPABASE_ANON_KEY   = credentials('SUPABASE_ANON_KEY')
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+
+    stage('Inject env vars') {
+      steps {
+        dir('project') {
+          sh """
+            echo "export const environment = {
+              production: true,
+              supabaseUrl: '${SUPABASE_URL}',
+              supabaseAnonKey: '${SUPABASE_ANON_KEY}'
+            };" > src/environment/environment.prod.ts
+          """
+        }
+      }
+    }
+
+    stage('Build Docker image') {
+      steps {
+        sh "docker build -t ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG} ."
+      }
+    }
+
+    stage('Push to ECR') {
+      when {
+        anyOf { branch 'main'; branch 'develop' }
+      }
+      steps {
+        sh """
+          aws ecr get-login-password --region ${AWS_REGION} | \
+            docker login --username AWS --password-stdin ${ECR_REGISTRY}
+          docker push ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}
+        """
+      }
+    }
+
+    stage('Tag release') {
+      when { branch 'main' }
+      steps {
+        sh """
+          git tag v\$(date +%Y%m%d)-${env.BUILD_NUMBER}
+          git push origin --tags
+        """
+      }
+    }
+
+    stage('Deploy to ECS — prod') {
+      when { branch 'main' }
+      steps {
+        sh """
+          aws ecs update-service \
+            --cluster ${ECS_CLUSTER} \
+            --service ${ECS_SERVICE_PROD} \
+            --force-new-deployment \
+            --region ${AWS_REGION}
+        """
+      }
+    }
+
+    stage('Deploy to ECS — staging') {
+      when { branch 'develop' }
+      steps {
+        sh """
+          aws ecs update-service \
+            --cluster ${ECS_CLUSTER} \
+            --service ${ECS_SERVICE_STAGING} \
+            --force-new-deployment \
+            --region ${AWS_REGION}
+        """
+      }
+    }
+  }
+
+  post {
+    success { echo "Deployed ${IMAGE_TAG} successfully" }
+    failure { echo "Pipeline failed on ${env.BRANCH_NAME}" }
+  }
+}
