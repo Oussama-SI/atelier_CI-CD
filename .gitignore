@@ -1,1 +1,8 @@
 full_install.sh
+Jenkins-cluster.sh
+
+*.tfvars
+*.tfstate
+*.terraform
+*.hcl
+*.tfstate.backup

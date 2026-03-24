@@ -14,9 +14,13 @@ This WorkShop covers :
 NOTE: Make sure you have terraform installed, create terraform.tfvars file with the variables (ec2-ami, region & your public ssh key) then do the following:
 
 ```bash
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/jenkins-key
+
 cd terraform
 
 terraform init
+
+terraform plan
 
 terraform apply -auto-approve
 ```

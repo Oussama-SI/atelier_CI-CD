@@ -1,5 +1,5 @@
 # Adding AWS credentials ans set the region 
 provider "aws" {
-  profile = "default"
+  profile = "devops"
   region  = var.region
 }
