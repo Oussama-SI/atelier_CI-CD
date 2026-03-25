@@ -1,11 +1,11 @@
 ## Overview
 
-This WorkShop covers :
+This workshop covers:
 
-- Comparing of GitActions & Jenkins performance in a Cloud-based deployment
-- GitActions also used her for pre-production testing with "develop" branch
-- Discover GA plugins and packages that's support integration and deployment on AWS
-- GA vs Jenkins monitoring and orchestration.
+- Comparing GitHub Actions and Jenkins performance in a cloud-based deployment workflow.
+- Using GitHub Actions for pre-production testing on the `develop` branch.
+- Exploring GitHub Actions plugins and packages that support AWS integration and deployment.
+- Evaluating monitoring and orchestration approaches between GitHub Actions and Jenkins.
 
 ## Jenkins
 
