@@ -1,0 +1,36 @@
+name: Angular CD
+
+on:
+     push:
+          branches:
+               - develop
+               - main
+     pull_request:
+
+jobs:
+     build:
+          runs-on: ubuntu-latest
+          steps:
+               - checkout, install deps, build Angular etc.
+
+     deploy-staging:
+          needs: build
+          if: github.ref == 'refs/heads/develop'
+          runs-on: ubuntu-latest
+          environment: staging
+          steps:
+               - checkout
+               - upload artifact
+               - deploy to staging (actions/deploy-pages@v4)
+               # use staging secrets
+
+     deploy-production:
+          needs: build
+          if: github.ref == 'refs/heads/main'
+          runs-on: ubuntu-latest
+          environment: github-pages
+          steps:
+               - checkout
+               - upload artifact
+               - deploy to github-pages
+               # use production secrets
