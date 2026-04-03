@@ -4,7 +4,13 @@ FROM node:20-alpine AS builder
 WORKDIR /app/project
 
 COPY project/package*.json ./
-RUN npm ci
+RUN npm config set registry https://registry.npmjs.org/ \
+ && npm ci --no-audit --fund=false \
+ && if npm ls --all --depth=9999 2>/dev/null | grep -Eiq '(^|[[:space:]])(axios|axois|aixos|axi0s)@'; then \
+			echo 'Blocked: axios or axios-like package detected in dependency tree.'; \
+			npm ls --all --depth=9999 | grep -Ei '(axios|axois|aixos|axi0s)@' || true; \
+			exit 1; \
+		fi
 
 COPY project/. ./
 
